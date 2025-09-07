@@ -27,6 +27,9 @@ jobs:
           pip install -r requirements.txt
           pip install bandit safety
 
+      # ------------------------
+      # 1) Code & dependencies scan
+      # ------------------------
       - name: Run Bandit (code security scan)
         run: |
           bandit -r src -f txt -o bandit-report.txt || true
@@ -36,12 +39,25 @@ jobs:
         run: |
           safety scan --full-report || true
 
-      - name: Run Trivy (container vulnerabilities)
+      - name: Run Trivy (filesystem scan)
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest'
+          scan-type: 'fs'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
+      # ------------------------
+      # 2) Docker image scan
+      # ------------------------
+      - name: Build Docker image
+        run: docker build -t lip_reading_system:latest .
+
+      - name: Run Trivy (image scan)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'lip_reading_system:latest'
           format: 'table'
-          exit-code: '0'   # non bloccare il job se ci sono vulnerabilità
+          exit-code: '0'   # non bloccare il job anche se trova vulnerabilità
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
