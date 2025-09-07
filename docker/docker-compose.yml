@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: lip_reading_db
+      POSTGRES_USER: lip_user
+      POSTGRES_PASSWORD: secure_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - lip_reading_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: lip_reader
+      RABBITMQ_DEFAULT_PASS: secure_password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - lip_reading_network
+
+  lip_reading_system:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=lip_reading_db
+      - DB_USER=lip_user
+      - DB_PASSWORD=secure_password
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=lip_reader
+      - RABBITMQ_PASS=secure_password
+    volumes:
+      - ../known_faces:/app/known_faces
+      - ../models:/app/models
+      - ../logs:/app/logs
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - lip_reading_network
+    devices:
+      - /dev/video0:/dev/video0
+
+volumes:
+  postgres_data:
+
+networks:
+  lip_reading_network:
+    driver: bridge

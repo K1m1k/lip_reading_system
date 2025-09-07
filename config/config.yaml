@@ -1,0 +1,161 @@
+system:
+  log_level: INFO
+  max_threads: 16
+  temp_directory: ./temp
+  data_directory: ./data
+  processing_mode: distributed
+  gpu_acceleration: true
+  health_check_interval: 30
+
+video_processing:
+  target_size: [640, 480]
+  normalize: true
+  resize: true
+  convert_to_rgb: true
+  buffer_size: 60
+  frame_batch_size: 8
+  frame_stride: 2
+
+video_sources:
+  - id: webcam_main
+    type: webcam
+    source: 0
+    enabled: true
+    location: "Ingresso Principale"
+    description: "Webcam ingresso principale"
+    processing_threads: 4
+
+lip_tracking:
+  static_mode: false
+  max_faces: 1
+  refine_landmarks: true
+  min_detection_confidence: 0.5
+  min_tracking_confidence: 0.5
+
+feature_extraction:
+  feature_type: geometric
+  use_pretrained: false
+  input_shape: [100, 50, 3]
+  hog_features: true
+  lbp_features: false
+  shape_features: true
+
+model:
+  type: lipnet
+  sequence_length: 30
+  confidence_threshold: 0.7
+  service:
+    url: ${LIPNET_URL:http://localhost:8000}
+    timeout_s: 5
+    retries: 2
+
+face_recognition:
+  model_type: cnn
+  known_faces_path: ./known_faces
+  recognition_threshold: 0.6
+  save_unknown_faces: true
+  unknown_faces_path: ./unknown_faces
+
+database:
+  host: ${DB_HOST}
+  port: ${DB_PORT:5432}
+  name: ${DB_NAME}
+  user: ${DB_USER}
+  password: ${DB_PASSWORD}
+  ssl_mode: require
+  connection_pool:
+    min: 5
+    max: 20
+    timeout: 30
+
+message_broker:
+  enabled: true
+  type: rabbitmq
+  host: ${RABBITMQ_HOST}
+  port: ${RABBITMQ_PORT:5672}
+  username: ${RABBITMQ_USER}
+  password: ${RABBITMQ_PASS}
+  exchange: ${RABBITMQ_EXCHANGE:detection_events}
+  queue: ${RABBITMQ_QUEUE:detection_queue}
+  routing_key: ${RABBITMQ_ROUTING_KEY:detection}
+  prefetch: 16
+  connection_retries: 5
+  retry_delay: 2
+
+encryption:
+  enabled: true
+  algorithm: aes-256
+  key_management:
+    type: vault
+    vault_address: ${VAULT_ADDR}
+    vault_token: ${VAULT_TOKEN}
+    secret_path: secret/lip_recognition/encryption_key
+  sign_data: true
+  signature_key_management:
+    type: kms
+    kms_key_id: ${KMS_KEY_ID}
+
+dashboard:
+  enabled: true
+  host: 0.0.0.0
+  port: 5000
+  auth_required: true
+  jwt_secret: ${JWT_SECRET}
+  admin_users:
+    - email: admin@enterprise.com
+      role: superadmin
+
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+  logging:
+    level: INFO
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s - trace_id=%(trace_id)s'
+    handlers:
+      - type: file
+        path: ./logs/system.log
+        max_size: 100MB
+        backup_count: 10
+      - type: syslog
+        host: ${SYSLOG_HOST}
+        port: ${SYSLOG_PORT}
+  tracing:
+    enabled: true
+    jaeger_endpoint: ${JAEGER_ENDPOINT}
+
+alerting:
+  webhook_url: ${ALERT_WEBHOOK_URL}
+  alert_threshold: high
+  confidence_thresholds:
+    detection: 0.7
+    recognition: 0.6
+    blacklist_match: 0.8
+    alert: 0.9
+  notification_channels:
+    email:
+      enabled: true
+      recipients:
+        - security@enterprise.com
+    slack:
+      enabled: true
+      webhook_url: ${SLACK_WEBHOOK_URL}
+    pagerduty:
+      enabled: false
+
+paths:
+  temp_frames: /tmp/lip_reading/frames
+  temp_faces: /tmp/lip_reading/faces
+  models: ./models
+  logs: ./logs
+  exports: ./exports
+
+cloud_deployment:
+  aws:
+    region: ${AWS_REGION}
+    vpc_id: ${AWS_VPC_ID}
+    subnet_ids: ${AWS_SUBNET_IDS}
+    security_group: ${AWS_SECURITY_GROUP}
+    ecs_cluster: lip_recognition_cluster
+    task_definition: lip_recognition_task
+    service_name: lip_recognition_service

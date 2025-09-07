@@ -1,0 +1,27 @@
+text
+
+hello
+world
+security
+alert
+danger
+help
+stop
+run
+fire
+police
+emergency
+intruder
+warning
+dangerous
+suspicious
+threat
+
+models/lipnet_model.h5 (placeholder)
+text
+
+# Questo è un file placeholder per il modello LipNet
+# In un'implementazione reale, questo sarebbe un file binario H5
+# Per ora, creiamo un file vuoto
+
+3. Codice Sorgente Principale

@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  lip_reading_system:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - DB_HOST=postgres.prod.enterprise.com
+      - DB_PORT=5432
+      - DB_NAME=lip_reading_prod
+      - DB_USER=lip_reader_prod
+      - DB_PASSWORD=${DB_PASSWORD}
+      - RABBITMQ_HOST=rabbitmq.prod.enterprise.com
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=lip_reader
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - VAULT_ADDR=${VAULT_ADDR}
+      - VAULT_TOKEN=${VAULT_TOKEN}
+      - KMS_KEY_ID=${KMS_KEY_ID}
+      - JWT_SECRET=${JWT_SECRET}
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
