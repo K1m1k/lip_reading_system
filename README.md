@@ -22,12 +22,52 @@ Features
 
     CI/CD Pipeline: Automated testing, security scanning, and deployment workflows
 
+
 ## Project Structure
+
 lip_reading_system/
-├── .github/ # GitHub Actions
-│ └── workflows/
-│ ├── ci-cd.yml
-│ └── security-scan.yml
+├── config/ # Configuration files
+│ ├── config.yaml # Main configuration
+│ └── .env.example # Environment variables template
+├── src/ # Source code
+│ ├── main.py # Application entry point
+│ ├── config_manager.py # Configuration management
+│ ├── video_input_manager.py # Video stream handling
+│ ├── lip_tracker.py # Lip detection and tracking
+│ ├── lip_reading_model.py # Lip reading model interface
+│ ├── lipnet_client.py # LipNet service client
+│ ├── face_recognition.py # Face recognition system
+│ ├── face_capture.py # Face capture and processing
+│ ├── feature_extractor.py # Feature extraction utilities
+│ ├── database.py # Database operations
+│ ├── message_broker.py # RabbitMQ integration
+│ ├── encryption.py # Data encryption utilities
+│ ├── secret_manager.py # Secure credential management
+│ ├── dashboard.py # Web dashboard API
+│ ├── monitoring.py # Monitoring and metrics
+│ ├── scalable_processing.py # Distributed processing
+│ ├── health_check.py # Health check server
+│ └── init.py
+├── tests/ # Test suite
+│ ├── test_database.py
+│ ├── test_security.py
+│ ├── test_performance.py
+│ ├── test_integration.py
+│ ├── test_pipeline.py
+│ ├── test_encryption.py
+│ └── test_lipnet_client.py
+├── docker/ # Docker configuration
+│ ├── Dockerfile
+│ ├── docker-compose.yml
+│ ├── docker-compose.prod.yml
+│ └── init-db.sql
+├── scripts/ # Automation scripts
+│ ├── setup_database.sh
+│ ├── setup_rabbitmq.sh
+│ ├── download_lipnet_model.sh
+│ ├── deploy_cloud.sh
+│ ├── rotate_keys.sh
+│ └── backup_system.sh
 ├── cloud-deployment/ # Infrastructure as Code
 │ └── terraform/
 │ ├── main.tf
@@ -36,55 +76,16 @@ lip_reading_system/
 │ ├── vpc.tf
 │ ├── ecs.tf
 │ └── asg.tf
-├── config/ # Configuration files
-│ ├── config.yaml
-│ └── .env.example
-├── docker/ # Docker definitions
-│ ├── Dockerfile
-│ ├── docker-compose.yml
-│ ├── docker-compose.prod.yml
-│ └── init-db.sql
-├── models/ # ML models & vocabulary
-│ ├── lipnet_model.h5 # Placeholder
+├── .github/workflows/ # GitHub Actions
+│ ├── ci-cd.yml
+│ └── security-scan.yml
+├── models/ # Model files
+│ ├── lipnet_model.h5
 │ └── vocabulary.txt
-├── scripts/ # Utility scripts
-│ ├── setup_database.sh
-│ ├── setup_rabbitmq.sh
-│ ├── download_lipnet_model.sh
-│ ├── deploy_cloud.sh
-│ ├── rotate_keys.sh
-│ └── backup_system.sh
-├── src/ # Application source code
-│ ├── init.py
-│ ├── main.py
-│ ├── config_manager.py
-│ ├── video_input_manager.py
-│ ├── lip_tracker.py
-│ ├── lip_reading_model.py
-│ ├── lipnet_client.py
-│ ├── face_recognition.py
-│ ├── face_capture.py
-│ ├── feature_extractor.py
-│ ├── database.py
-│ ├── message_broker.py
-│ ├── encryption.py
-│ ├── secret_manager.py
-│ ├── dashboard.py
-│ ├── monitoring.py
-│ ├── scalable_processing.py
-│ └── health_check.py
-├── tests/ # Testing modules
-│ ├── test_database.py
-│ ├── test_security.py
-│ ├── test_performance.py
-│ ├── test_integration.py
-│ ├── test_pipeline.py
-│ ├── test_encryption.py
-│ └── test_lipnet_client.py
 ├── requirements.txt # Python dependencies
 ├── LICENSE # MIT License
-├── NOTICE.md # Third-party acknowledgments
 └── README.md # Project documentation
+
 
 
 Quick Start
