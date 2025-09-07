@@ -22,70 +22,70 @@ Features
 
     CI/CD Pipeline: Automated testing, security scanning, and deployment workflows
 
-Project Structure
-text
-
+## Project Structure
 lip_reading_system/
-├── config/                 # Configuration files
-│   ├── config.yaml        # Main configuration
-│   └── .env.example       # Environment variables template
-├── src/                   # Source code
-│   ├── main.py           # Application entry point
-│   ├── config_manager.py # Configuration management
-│   ├── video_input_manager.py # Video stream handling
-│   ├── lip_tracker.py    # Lip detection and tracking
-│   ├── lip_reading_model.py # Lip reading model interface
-│   ├── lipnet_client.py  # LipNet service client
-│   ├── face_recognition.py # Face recognition system
-│   ├── face_capture.py   # Face capture and processing
-│   ├── feature_extractor.py # Feature extraction utilities
-│   ├── database.py       # Database operations
-│   ├── message_broker.py # RabbitMQ integration
-│   ├── encryption.py     # Data encryption utilities
-│   ├── secret_manager.py # Secure credential management
-│   ├── dashboard.py      # Web dashboard API
-│   ├── monitoring.py     # Monitoring and metrics
-│   ├── scalable_processing.py # Distributed processing
-│   ├── health_check.py   # Health check server
-│   └── __init__.py      # Package initialization
-├── tests/                # Test suite
-│   ├── test_database.py # Database tests
-│   ├── test_security.py # Security tests
-│   ├── test_performance.py # Performance tests
-│   ├── test_integration.py # Integration tests
-│   ├── test_pipeline.py # Pipeline tests
-│   ├── test_encryption.py # Encryption tests
-│   └── test_lipnet_client.py # LipNet client tests
-├── docker/              # Docker configuration
-│   ├── Dockerfile      # Container definition
-│   ├── docker-compose.yml # Development environment
-│   ├── docker-compose.prod.yml # Production environment
-│   └── init-db.sql     # Database initialization
-├── scripts/            # Automation scripts
-│   ├── setup_database.sh # Database setup
-│   ├── setup_rabbitmq.sh # RabbitMQ setup
-│   ├── download_lipnet_model.sh # Model download
-│   ├── deploy_cloud.sh # Cloud deployment
-│   ├── rotate_keys.sh # Key rotation
-│   └── backup_system.sh # System backup
-├── cloud-deployment/   # Infrastructure as Code
-│   └── terraform/     # Terraform configuration
-│       ├── main.tf    # Main Terraform configuration
-│       ├── variables.tf # Terraform variables
-│       ├── outputs.tf # Terraform outputs
-│       ├── vpc.tf     # VPC configuration
-│       ├── ecs.tf     # ECS configuration
-│       └── asg.tf     # Auto Scaling configuration
-├── .github/workflows/ # GitHub Actions
-│   ├── ci-cd.yml     # CI/CD pipeline
-│   └── security-scan.yml # Security scanning
-├── models/           # Model files
-│   ├── lipnet_model.h5 # LipNet model (placeholder)
-│   └── vocabulary.txt # Recognition vocabulary
-├── requirements.txt  # Python dependencies
-├── LICENSE          # MIT License
-├── NOTICE.md        # Third-party attributions
-└── README.md        # Project documentation
+├── .github/ # GitHub Actions
+│ └── workflows/
+│ ├── ci-cd.yml
+│ └── security-scan.yml
+├── cloud-deployment/ # Infrastructure as Code
+│ └── terraform/
+│ ├── main.tf
+│ ├── variables.tf
+│ ├── outputs.tf
+│ ├── vpc.tf
+│ ├── ecs.tf
+│ └── asg.tf
+├── config/ # Configuration files
+│ ├── config.yaml
+│ └── .env.example
+├── docker/ # Docker definitions
+│ ├── Dockerfile
+│ ├── docker-compose.yml
+│ ├── docker-compose.prod.yml
+│ └── init-db.sql
+├── models/ # ML models & vocabulary
+│ ├── lipnet_model.h5 # Placeholder
+│ └── vocabulary.txt
+├── scripts/ # Utility scripts
+│ ├── setup_database.sh
+│ ├── setup_rabbitmq.sh
+│ ├── download_lipnet_model.sh
+│ ├── deploy_cloud.sh
+│ ├── rotate_keys.sh
+│ └── backup_system.sh
+├── src/ # Application source code
+│ ├── init.py
+│ ├── main.py
+│ ├── config_manager.py
+│ ├── video_input_manager.py
+│ ├── lip_tracker.py
+│ ├── lip_reading_model.py
+│ ├── lipnet_client.py
+│ ├── face_recognition.py
+│ ├── face_capture.py
+│ ├── feature_extractor.py
+│ ├── database.py
+│ ├── message_broker.py
+│ ├── encryption.py
+│ ├── secret_manager.py
+│ ├── dashboard.py
+│ ├── monitoring.py
+│ ├── scalable_processing.py
+│ └── health_check.py
+├── tests/ # Testing modules
+│ ├── test_database.py
+│ ├── test_security.py
+│ ├── test_performance.py
+│ ├── test_integration.py
+│ ├── test_pipeline.py
+│ ├── test_encryption.py
+│ └── test_lipnet_client.py
+├── requirements.txt # Python dependencies
+├── LICENSE # MIT License
+├── NOTICE.md # Third-party acknowledgments
+└── README.md # Project documentation
+
 
 Quick Start
 Prerequisites
