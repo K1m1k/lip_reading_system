@@ -22,7 +22,7 @@ Features
 
     CI/CD Pipeline: Automated testing, security scanning, and deployment workflows
 
-
+```text
 lip_reading_system/
 ├── config/                 # Configuration files
 │   ├── config.yaml         # Main configuration
@@ -83,6 +83,7 @@ lip_reading_system/
 ├── requirements.txt        # Python dependencies
 ├── LICENSE                 # MIT License
 └── README.md               # Project documentation
+```
 
 
 Quick Start
