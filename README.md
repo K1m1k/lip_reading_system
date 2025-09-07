@@ -1,53 +1,276 @@
-# Sistema Avanzato di Riconoscimento Labiale - Versione Enterprise
+Lip Reading System
 
-Un sistema completo per il riconoscimento del parlato labiale con integrazione di blacklist, riconoscimento facciale e dashboard di monitoraggio.
+https://github.com/K1m1k/lip_reading_system/actions/workflows/ci-cd.yml/badge.svg
+https://github.com/K1m1k/lip_reading_system/actions/workflows/security-scan.yml/badge.svg
 
-## Funzionalità
+Advanced lip-reading and face-recognition system with secure data processing, monitoring, and scalable cloud deployment.
+Features
 
-- Riconoscimento labiale in tempo reale con supporto GPU
-- Sistema di blacklist per frasi pericolose
-- Riconoscimento facciale integrato con supporto CNN
-- Crittografia AES-256 con gestione sicura delle chiavi (Vault/KMS)
-- Dashboard web per monitoraggio con autenticazione JWT
-- Notifiche in tempo reale tramite multiple sorgenti
-- Supporto per multiple sorgenti video con elaborazione distribuita
-- Monitoraggio avanzato con Prometheus e tracing distribuito
-- Health check e metriche di performance
+    Real-time Lip Reading: Advanced lip detection and recognition using MediaPipe and TensorFlow
 
-## Architettura
+    Face Recognition: Integrated face recognition with support for known faces database
 
-Il sistema è progettato con un'architettura modulare e scalabile:
+    Multi-source Video Input: Support for webcam, RTSP streams, and video files
 
-+---------------------+ +---------------------+ +---------------------+
-| Sorgenti Video | | Elaborazione | | Database & |
-| (Webcam, RTSP, ecc)| ----> | Distribuita | ----> | Message Broker |
-+---------------------+ | - Multiprocessing | | - RabbitMQ |
-| - GPU Acceleration | | - Encryption |
-+---------------------+ +---------------------+
-| |
-v v
-+---------------------+ +---------------------+
-| Monitoraggio | | Dashboard & |
-| - Prometheus | | Alerting |
-| - Grafana | | - Webhook |
-+---------------------+ +---------------------+
+    Enterprise Security: AES-256 encryption, HashiCorp Vault integration, and digital signatures
 
-## Installazione
+    Distributed Processing: Scalable architecture with support for GPU acceleration
 
-1. Clona il repository
-2. Installa le dipendenze: `pip install -r requirements.txt`
-3. Configura il database: `./scripts/setup_database.sh`
-4. Configura RabbitMQ: `./scripts/setup_rabbitmq.sh`
-5. Scarica il modello: `./scripts/download_lipnet_model.sh`
-6. Configura le variabili d'ambiente: `cp config/.env.example config/.env`
-7. Avvia il sistema: `python src/main.py`
+    Monitoring & Alerting: Prometheus metrics, health checks, and multiple notification channels
 
-## Utilizzo
+    Cloud Ready: Complete Terraform configuration for AWS ECS deployment with auto-scaling
 
-Accedi alla dashboard all'indirizzo http://localhost:5000 per monitorare i rilevamenti e gestire la blacklist.
+    CI/CD Pipeline: Automated testing, security scanning, and deployment workflows
 
-## Deployment Cloud
+Project Structure
+text
 
-### AWS ECS
-```bash
-./scripts/deploy_cloud.sh aws
+lip_reading_system/
+├── config/                 # Configuration files
+│   ├── config.yaml        # Main configuration
+│   └── .env.example       # Environment variables template
+├── src/                   # Source code
+│   ├── main.py           # Application entry point
+│   ├── config_manager.py # Configuration management
+│   ├── video_input_manager.py # Video stream handling
+│   ├── lip_tracker.py    # Lip detection and tracking
+│   ├── lip_reading_model.py # Lip reading model interface
+│   ├── lipnet_client.py  # LipNet service client
+│   ├── face_recognition.py # Face recognition system
+│   ├── face_capture.py   # Face capture and processing
+│   ├── feature_extractor.py # Feature extraction utilities
+│   ├── database.py       # Database operations
+│   ├── message_broker.py # RabbitMQ integration
+│   ├── encryption.py     # Data encryption utilities
+│   ├── secret_manager.py # Secure credential management
+│   ├── dashboard.py      # Web dashboard API
+│   ├── monitoring.py     # Monitoring and metrics
+│   ├── scalable_processing.py # Distributed processing
+│   ├── health_check.py   # Health check server
+│   └── __init__.py      # Package initialization
+├── tests/                # Test suite
+│   ├── test_database.py # Database tests
+│   ├── test_security.py # Security tests
+│   ├── test_performance.py # Performance tests
+│   ├── test_integration.py # Integration tests
+│   ├── test_pipeline.py # Pipeline tests
+│   ├── test_encryption.py # Encryption tests
+│   └── test_lipnet_client.py # LipNet client tests
+├── docker/              # Docker configuration
+│   ├── Dockerfile      # Container definition
+│   ├── docker-compose.yml # Development environment
+│   ├── docker-compose.prod.yml # Production environment
+│   └── init-db.sql     # Database initialization
+├── scripts/            # Automation scripts
+│   ├── setup_database.sh # Database setup
+│   ├── setup_rabbitmq.sh # RabbitMQ setup
+│   ├── download_lipnet_model.sh # Model download
+│   ├── deploy_cloud.sh # Cloud deployment
+│   ├── rotate_keys.sh # Key rotation
+│   └── backup_system.sh # System backup
+├── cloud-deployment/   # Infrastructure as Code
+│   └── terraform/     # Terraform configuration
+│       ├── main.tf    # Main Terraform configuration
+│       ├── variables.tf # Terraform variables
+│       ├── outputs.tf # Terraform outputs
+│       ├── vpc.tf     # VPC configuration
+│       ├── ecs.tf     # ECS configuration
+│       └── asg.tf     # Auto Scaling configuration
+├── .github/workflows/ # GitHub Actions
+│   ├── ci-cd.yml     # CI/CD pipeline
+│   └── security-scan.yml # Security scanning
+├── models/           # Model files
+│   ├── lipnet_model.h5 # LipNet model (placeholder)
+│   └── vocabulary.txt # Recognition vocabulary
+├── requirements.txt  # Python dependencies
+├── LICENSE          # MIT License
+├── NOTICE.md        # Third-party attributions
+└── README.md        # Project documentation
+
+Quick Start
+Prerequisites
+
+    Python 3.9+
+
+    PostgreSQL
+
+    RabbitMQ
+
+    Docker (optional)
+
+    Terraform (for cloud deployment)
+
+Local Installation
+
+    Clone the repository:
+
+bash
+
+git clone https://github.com/K1m1k/lip_reading_system.git
+cd lip_reading_system
+
+    Create a virtual environment and install dependencies:
+
+bash
+
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+    Set up the database and message broker:
+
+bash
+
+# Setup PostgreSQL database
+./scripts/setup_database.sh
+
+# Setup RabbitMQ
+./scripts/setup_rabbitmq.sh
+
+    Configure environment variables:
+
+bash
+
+cp config/.env.example config/.env
+# Edit config/.env with your actual values
+
+    Run the system:
+
+bash
+
+python src/main.py
+
+Docker Deployment
+
+    Build and start the containers:
+
+bash
+
+docker-compose up --build
+
+    For production deployment:
+
+bash
+
+docker-compose -f docker-compose.prod.yml up --build
+
+Cloud Deployment (AWS)
+
+    Configure AWS credentials:
+
+bash
+
+export AWS_ACCESS_KEY_ID=your_access_key
+export AWS_SECRET_ACCESS_KEY=your_secret_key
+
+    Initialize and apply Terraform configuration:
+
+bash
+
+cd cloud-deployment/terraform
+terraform init
+terraform plan
+terraform apply
+
+Configuration
+
+The system is configured through config/config.yaml and environment variables. Key configuration sections include:
+
+    Video Processing: Frame size, normalization, buffer settings
+
+    Lip Tracking: Detection confidence, ROI settings
+
+    Model Configuration: LipNet service URL, confidence thresholds
+
+    Database: PostgreSQL connection settings
+
+    Message Broker: RabbitMQ connection details
+
+    Security: Encryption settings, Vault/KMS configuration
+
+    Monitoring: Prometheus, logging, and tracing settings
+
+Usage
+
+Once running, the system will:
+
+    Process video streams from configured sources
+
+    Detect and track lip movements
+
+    Recognize spoken phrases using the LipNet model
+
+    Match detected phrases against a blacklist
+
+    Recognize faces in the video stream
+
+    Store results in the database
+
+    Send alerts for blacklist matches via configured channels
+
+Access the dashboard at http://localhost:5000 to view detections and manage the blacklist.
+API Endpoints
+
+    GET /api/detections - Retrieve detection results
+
+    GET/POST/DELETE /api/blacklist - Manage blacklisted phrases
+
+    GET /api/stats - Get system statistics
+
+    GET /health - Health check endpoint
+
+    GET /metrics - Prometheus metrics
+
+Monitoring
+
+The system exposes several monitoring endpoints:
+
+    Prometheus Metrics: http://localhost:9090
+
+    Health Check: http://localhost:8080/health
+
+    System Logs: Available in logs/system.log
+
+Security Features
+
+    Encryption: All sensitive data is encrypted using AES-256
+
+    Key Management: Integration with HashiCorp Vault and AWS KMS
+
+    Digital Signatures: All detections are signed to prevent tampering
+
+    Secure Credentials: Environment-based configuration with fallback
+
+    Role-based Access: JWT authentication for dashboard access
+
+Contributing
+
+    Fork the repository
+
+    Create a feature branch: git checkout -b feature/amazing-feature
+
+    Commit your changes: git commit -m 'Add amazing feature'
+
+    Push to the branch: git push origin feature/amazing-feature
+
+    Open a Pull Request
+
+License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+Third-Party Attributions
+
+This project incorporates components from MediaPipe, TensorFlow, LipNet, OpenCV, PostgreSQL, RabbitMQ, Vault, Prometheus, Flask and others.
+See NOTICE.md for the full list of licenses and attributions.
+Support
+
+For support, please open an issue on GitHub or contact the development team.
+Acknowledgments
+
+    MediaPipe for face and lip detection
+
+    TensorFlow for model support
+
+    LipNet for the lip reading model architecture
+
+    PostgreSQL and RabbitMQ for data persistence and messaging
