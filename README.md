@@ -1,7 +1,7 @@
 Lip Reading System
 
 https://github.com/K1m1k/lip_reading_system/actions/workflows/ci-cd.yml/badge.svg
-https://github.com/K1m1k/lip_reading_system/actions/workflows/security-scan.yml/badge.svg
+[![Security Scan](https://github.com/K1m1k/lip_reading_system/actions/workflows/security-scan.yml/badge.svg)](https://github.com/K1m1k/lip_reading_system/actions/workflows/security-scan.yml)
 
 Advanced lip-reading and face-recognition system with secure data processing, monitoring, and scalable cloud deployment.
 Features
