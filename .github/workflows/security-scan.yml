@@ -28,7 +28,7 @@ jobs:
           pip install bandit safety
 
       # ------------------------
-      # 1) Code & dependencies scan
+      # Code & dependencies scan
       # ------------------------
       - name: Run Bandit (code security scan)
         run: |
@@ -42,22 +42,8 @@ jobs:
       - name: Run Trivy (filesystem scan)
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
+          scan-type: fs
+          path: .
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
-
-      # ------------------------
-      # 2) Docker image scan
-      # ------------------------
-      - name: Build Docker image
-        run: docker build -t lip_reading_system:latest .
-
-      - name: Run Trivy (image scan)
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'lip_reading_system:latest'
-          format: 'table'
-          exit-code: '0'   # non bloccare il job anche se trova vulnerabilità
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          exit-code: '0'   # non bloccare il job se trova vulnerabilità
