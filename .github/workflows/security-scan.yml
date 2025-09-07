@@ -1,4 +1,3 @@
-
 name: Security Scan
 
 on:
@@ -35,7 +34,7 @@ jobs:
 
       - name: Run Safety (dependency vulnerabilities)
         run: |
-          safety check --full-report || true
+          safety scan --full-report || true
 
       - name: Run Trivy (container vulnerabilities)
         uses: aquasecurity/trivy-action@master
